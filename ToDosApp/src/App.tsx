@@ -1,11 +1,29 @@
-import Todos from './components/Todos';
-import './App.css';
+import React from "react";
 
+import Todos from "./components/Todos";
+import Todo from "./models/todo";
+import NewTodo from "./components/NewTodo";
 
 function App() {
+  const [todos, setTodos] = React.useState<Todo[]>([]);
+
+  const addTodoHandler = (todoText: string) => {
+    const newTodo = new Todo(todoText);
+    setTodos((prevTodos) => {
+      return prevTodos.concat(newTodo);
+    });
+  };
+
+  const removeTodoHandler = (todoId : string) => {
+    setTodos((prevTodos) => {
+      return prevTodos.filter(todo => todo.id !== todoId)
+    })
+  }
+
   return (
     <div>
-      <Todos/>
+      <NewTodo onAddTodo={addTodoHandler} />
+      <Todos items={todos} onRemoveTodo={removeTodoHandler} />
     </div>
   );
 }
